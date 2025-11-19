@@ -1,0 +1,36 @@
+<div class="dashboard-container">
+
+  <aside class="sidebar">
+    <h2>Rede Social</h2>
+    
+    <div class="card">
+      <h3>Novo Usuário</h3>
+      <input type="text" placeholder="Nome do usuário" #nomeInput>
+      <button (click)="adicionarUsuario(nomeInput.value)">Cadastrar</button>
+    </div>
+    
+    <div class="card">
+      <h3>Nova Conexão</h3>
+      <input type="text" placeholder="Nome da Pessoa 1" #nomeA>
+      <input type="text" placeholder="Nome da Pessoa 2" #nomeB>
+      <button (click)="adicionarConexao(nomeA.value, nomeB.value)">Conectar</button>
+    </div>
+  </aside>
+
+  <main class="content">
+    
+    <section class="graph-area">
+      <div id="cy" class="grafo-container"></div>
+    </section>
+
+    <section class="metrics-panel">
+      <div class="metric">
+        <strong>Total de Usuários:</strong> {{ totalUsuarios }}
+      </div>
+      <div class="metric">
+        <strong>Total de Conexões:</strong> {{ totalConexoes }}
+      </div>
+    </section>
+
+  </main>
+</div>

@@ -1,0 +1,13 @@
+/* Arquivo: src/styles.css */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Garante que o navegador nunca crie scroll na janela principal */
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}

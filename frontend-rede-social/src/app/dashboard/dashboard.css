@@ -1,0 +1,107 @@
+/* --- RESET --- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* --- TELA INTEIRA (SEM SCROLL) --- */
+.dashboard-container {
+  display: flex;
+  /* Mudança importante: De 100vw para 100% */
+  width: 100%;            
+  height: 100vh;          
+  background-color: #f0f2f5;
+  font-family: 'Segoe UI', sans-serif;
+  /* Removemos o overflow daqui porque já colocamos no body, 
+     mas mal não faz deixar aqui também */
+  overflow: hidden;       
+}
+/* --- SIDEBAR (ESQUERDA) --- */
+.sidebar {
+  width: 280px;
+  min-width: 280px;
+  height: 100%;
+  background-color: #fff;
+  border-right: 1px solid #ddd;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 20;
+}
+
+.sidebar h2 {
+  font-size: 1.4rem;
+  color: #333;
+  border-bottom: 2px solid #000;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+/* --- ÁREA DA DIREITA (CONTEÚDO) --- */
+.content {
+  flex: 1; /* Ocupa o resto da largura */
+  display: flex;
+  flex-direction: column; /* Organiza: Grafo em cima, Rodapé embaixo */
+  height: 100%; /* Altura total */
+  position: relative;
+}
+
+/* --- ONDE O GRAFO FICA (CINZA) --- */
+.graph-area {
+  /* O SEGREDO: flex: 1 faz essa área crescer o máximo possível,
+     empurrando o rodapé lá para baixo. */
+  flex: 1; 
+  
+  display: flex;
+  justify-content: center; /* Centraliza o grafo horizontalmente */
+  align-items: center;     /* Centraliza o grafo verticalmente */
+  
+  background-color: #eef2f5;
+  padding: 20px;
+  overflow: hidden;
+}
+
+/* --- O RETÂNGULO PRETO (GRAFO) --- */
+.grafo-container {
+  /* Tamanho Compacto e Fixo */
+  width: 90%;
+  max-width: 950px;        /* Largura controlada */
+  height: 50vh !important; /* Metade da altura da tela (Compacto) */
+  
+  /* Visual Dark */
+  background-color: #151b26;
+  background-image: radial-gradient(#2c3e50 1px, transparent 1px);
+  background-size: 25px 25px;
+  
+  border: 1px solid #333;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  
+  position: relative;
+  display: block;
+}
+
+/* --- RODAPÉ (FIXO NO FUNDO) --- */
+.metrics-panel {
+  height: 70px;     /* Altura fixa */
+  min-height: 70px;
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+  
+  z-index: 10;
+}
+
+.metric { font-size: 1rem; font-weight: 600; color: #555; }
+
+/* --- INPUTS E BOTÕES --- */
+.card { background: #fff; padding: 15px; border: 1px solid #ddd; border-radius: 6px; }
+input { width: 100%; padding: 8px; margin-bottom: 8px; border: 1px solid #ccc; border-radius: 4px;}
+button { width: 100%; padding: 10px; background: #000; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;}
+button:hover { background: #333; }
