@@ -19,7 +19,7 @@ services:
   # 2. O Back-end (API)
   backend:
     build: ./rede-social-api
-    container_name: rede-social-backend
+    container_name: rede-social-api
     ports:
       - "3000:3000"
     environment:
@@ -37,7 +37,7 @@ services:
   # 3. O Front-end (Angular)
   frontend:
     build: ./frontend-rede-social
-    container_name: rede-social-frontend
+    container_name: frontend-rede-social
     ports:
       - "4200:80" # Professor acessa na porta 4200, mas internamente é 80 (Nginx)
     depends_on:

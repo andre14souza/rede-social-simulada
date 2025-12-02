@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 // 1. Importe o Dashboard aqui
 import { DashboardComponent } from './dashboard/dashboard'; 
 
@@ -7,7 +6,7 @@ import { DashboardComponent } from './dashboard/dashboard';
   selector: 'app-root',
   standalone: true,
   // 2. Adicione o DashboardComponent nesta lista de imports
-  imports: [RouterOutlet, DashboardComponent], 
+  imports: [DashboardComponent], 
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
