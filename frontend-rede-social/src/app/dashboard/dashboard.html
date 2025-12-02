@@ -1,20 +1,137 @@
 <div class="dashboard-container">
 
   <aside class="sidebar">
-    <h2>Rede Social</h2>
     
-    <div class="card">
-      <h3>Novo Usuário</h3>
-      <input type="text" placeholder="Nome do usuário" #nomeInput>
-      <button (click)="adicionarUsuario(nomeInput.value)">Cadastrar</button>
+    <div class="logo-container">
+      <img src="assets/logo-conexao.jpg" alt="Conexões Interpessoais" class="sidebar-logo">
+    </div>
+
+    <div class="card info-card" *ngIf="usuarioSelecionado">
+      <h3>Detalhes</h3>
+      <div class="info-row">
+        <span class="label">Nome:</span>
+        <span class="value highlight">{{ usuarioSelecionado.nome }}</span>
+      </div>
+      <div class="info-row">
+        <span class="label">Amigos:</span>
+        <span class="value degree-badge">{{ usuarioSelecionado.grau }}</span>
+      </div>
+      <button class="btn-clear" (click)="limparSelecao()">Limpar Seleção</button>
+      
+      <div *ngIf="usuarioSelecionado.sugestoes?.length > 0" style="margin-top:10px;">
+         <small style="color:#666">Sugestão: <b>{{ usuarioSelecionado.sugestoes[0].nome }}</b></small>
+      </div>
+    </div>
+
+    <div class="menu-item">
+      <button class="menu-header" (click)="toggleMenu('localizar')" [class.active]="menuAberto === 'localizar'">
+        <span>Localizar Usuário</span>
+        <span class="arrow">{{ menuAberto === 'localizar' ? '▲' : '▼' }}</span>
+      </button>
+
+      <div class="menu-content" *ngIf="menuAberto === 'localizar'">
+        <div style="display: flex; gap: 5px;">
+          <input type="text" placeholder="Digite o nome..." #buscaInput (keyup.enter)="buscarUsuario(buscaInput.value)">
+          <button style="width: 50px;" (click)="buscarUsuario(buscaInput.value)">Ir</button>
+        </div>
+        
+        <button class="btn-analise-outline" style="margin-top: 10px;" (click)="resetarZoom()">
+          Restaurar Visão Geral
+        </button>
+      </div>
     </div>
     
-    <div class="card">
-      <h3>Nova Conexão</h3>
-      <input type="text" placeholder="Nome da Pessoa 1" #nomeA>
-      <input type="text" placeholder="Nome da Pessoa 2" #nomeB>
-      <button (click)="adicionarConexao(nomeA.value, nomeB.value)">Conectar</button>
+    <div class="menu-item">
+      <button class="menu-header" (click)="toggleMenu('usuario')" [class.active]="menuAberto === 'usuario'">
+        <span>Novo Usuário</span>
+        <span class="arrow">{{ menuAberto === 'usuario' ? '▲' : '▼' }}</span>
+      </button>
+      
+      <div class="menu-content" *ngIf="menuAberto === 'usuario'">
+        <input type="text" placeholder="Nome do usuário" #nomeInput>
+        <button (click)="adicionarUsuario(nomeInput.value)">Cadastrar</button>
+      </div>
     </div>
+
+    <div class="menu-item">
+      <button class="menu-header" (click)="toggleMenu('conexao')" [class.active]="menuAberto === 'conexao'">
+        <span>Nova Conexão</span>
+        <span class="arrow">{{ menuAberto === 'conexao' ? '▲' : '▼' }}</span>
+      </button>
+      
+      <div class="menu-content" *ngIf="menuAberto === 'conexao'">
+        <input type="text" placeholder="Nome da Pessoa 1" #nomeA>
+        <input type="text" placeholder="Nome da Pessoa 2" #nomeB>
+        <button (click)="adicionarConexao(nomeA.value, nomeB.value)">Conectar</button>
+      </div>
+    </div>
+
+    <div class="menu-item">
+      <button class="menu-header" (click)="toggleMenu('caminho')" [class.active]="menuAberto === 'caminho'">
+        <span>Rota / Caminho</span>
+        <span class="arrow">{{ menuAberto === 'caminho' ? '▲' : '▼' }}</span>
+      </button>
+
+      <div class="menu-content" *ngIf="menuAberto === 'caminho'">
+        <input type="text" placeholder="Origem" #pathStart>
+        <input type="text" placeholder="Destino" #pathEnd>
+        <button class="btn-path" (click)="buscarCaminho(pathStart.value, pathEnd.value)">Traçar Rota</button>
+      </div>
+    </div>
+
+    <div class="menu-item">
+      <button class="menu-header" (click)="toggleMenu('analise')" [class.active]="menuAberto === 'analise'">
+        <span>Análise da Rede</span>
+        <span class="arrow">{{ menuAberto === 'analise' ? '▲' : '▼' }}</span>
+      </button>
+
+      <div class="menu-content" *ngIf="menuAberto === 'analise'">
+        <p style="font-size: 0.8rem; color: #666; margin-bottom: 10px;">
+          Identificar comunidades e ilhas isoladas.
+        </p>
+        <button class="btn-analise" (click)="colorirGrupos()">
+          Colorir por Grupos
+        </button>
+        <button class="btn-analise-outline" (click)="resetarCores()">
+          Resetar Cores
+        </button>
+      </div>
+    </div>
+
+    <div class="menu-item">
+      <button class="menu-header" (click)="toggleMenu('exportar')" [class.active]="menuAberto === 'exportar'">
+        <span>Exportar Dados</span>
+        <span class="arrow">{{ menuAberto === 'exportar' ? '▲' : '▼' }}</span>
+      </button>
+
+      <div class="menu-content" *ngIf="menuAberto === 'exportar'">
+        <div class="btn-group">
+          <button class="btn-export" (click)="baixarImagem()">PNG</button>
+          <button class="btn-export" (click)="baixarJSON()">JSON</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-item">
+      <button class="menu-header danger-header" (click)="toggleMenu('excluir')" [class.active]="menuAberto === 'excluir'">
+        <span>Zona de Perigo</span>
+        <span class="arrow">{{ menuAberto === 'excluir' ? '▲' : '▼' }}</span>
+      </button>
+
+      <div class="menu-content danger-content" *ngIf="menuAberto === 'excluir'">
+        <label>Excluir Usuário:</label>
+        <div style="display: flex; gap: 5px; margin-bottom: 10px;">
+          <input type="text" placeholder="Nome" #delUser>
+          <button class="btn-danger" (click)="excluirUsuario(delUser.value)">X</button>
+        </div>
+        
+        <label>Desfazer Amizade:</label>
+        <input type="text" placeholder="Pessoa 1" #delConA>
+        <input type="text" placeholder="Pessoa 2" #delConB>
+        <button class="btn-danger full-width" (click)="excluirConexao(delConA.value, delConB.value)">Desfazer</button>
+      </div>
+    </div>
+
   </aside>
 
   <main class="content">
@@ -24,12 +141,9 @@
     </section>
 
     <section class="metrics-panel">
-      <div class="metric">
-        <strong>Total de Usuários:</strong> {{ totalUsuarios }}
-      </div>
-      <div class="metric">
-        <strong>Total de Conexões:</strong> {{ totalConexoes }}
-      </div>
+      <div class="metric">Total de Usuários: {{ totalUsuarios }}</div>
+      <div class="metric">Total de Conexões: {{ totalConexoes }}</div>
+      <div class="metric">Grupos Isolados: {{ totalGrupos }}</div>
     </section>
 
   </main>

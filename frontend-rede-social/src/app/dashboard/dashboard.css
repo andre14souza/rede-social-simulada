@@ -4,7 +4,93 @@
   margin: 0;
   padding: 0;
 }
+/* Estilo para a área de remoção (Versão P&B) */
+.delete-card {
+  /* Tarja preta na esquerda para indicar seção diferente */
+  border-left: 5px solid #000000; 
+  background-color: #f9f9f9; /* Um cinza muito leve para destacar do fundo branco */
+}
 
+/* Título dentro do card de exclusão */
+.delete-card h3 {
+  color: #000;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+}
+
+/* Botão de Perigo (Estilo Outline / Contorno) */
+.btn-danger {
+  background-color: #ffffff; /* Fundo branco */
+  color: #000000;            /* Texto preto */
+  border: 2px solid #000000; /* Borda grossa preta */
+  font-weight: bold;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+/* Efeito ao passar o mouse: Inverte as cores */
+.btn-danger:hover {
+  background-color: #000000;
+  color: #ffffff;
+}
+/* --- CARD DE DETALHES (INFO) --- */
+.info-card {
+  border-left: 5px solid #8b5cf6; /* Roxo para combinar com o grafo */
+  background-color: #f8fafc;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.info-card h3 {
+  margin-top: 0;
+  color: #333;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 5px;
+  font-size: 1rem;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+.label { color: #64748b; font-weight: 600; }
+.value { color: #0f172a; font-weight: bold; }
+.value.highlight { color: #7c3aed; } /* Roxo destaque no nome */
+
+/* Bolinha do Grau */
+.degree-badge {
+  background-color: #0f172a;
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+}
+
+/* Botão de Limpar */
+.btn-clear {
+  margin-top: 10px;
+  background-color: #e2e8f0;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+.btn-clear:hover {
+  background-color: #cbd5e1;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.full-width {
+  width: 100%;
+  margin-top: 8px;
+}
 /* --- TELA INTEIRA (SEM SCROLL) --- */
 .dashboard-container {
   display: flex;
@@ -18,27 +104,229 @@
   overflow: hidden;       
 }
 /* --- SIDEBAR (ESQUERDA) --- */
+/* --- BARRA LATERAL (Com Scroll) --- */
 .sidebar {
   width: 280px;
   min-width: 280px;
-  height: 100%;
+  height: 100%;       /* Ocupa toda a altura */
+  
   background-color: #fff;
   border-right: 1px solid #ddd;
   padding: 20px;
+  
   display: flex;
   flex-direction: column;
   gap: 15px;
   z-index: 20;
+  
+  /* A MÁGICA DO SCROLL: */
+  overflow-y: auto;   /* Cria scroll vertical se precisar */
+  overflow-x: hidden; /* Esconde scroll horizontal */
 }
 
-.sidebar h2 {
-  font-size: 1.4rem;
+/* --- PERSONALIZAR A BARRA DE ROLAGEM (Fina e Discreta) --- */
+.sidebar::-webkit-scrollbar {
+  width: 6px; /* Largura fininha */
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Cor do fundo da barra */
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #ccc; /* Cor da parte que mexe */
+  border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: #999; /* Cor quando passa o mouse */
+}
+
+.logo-container {
+  text-align: center;      /* Centraliza a imagem */
+  margin-bottom: 20px;     /* Espaço embaixo antes dos cards */
+  padding-bottom: 15px;
+  border-bottom: 2px solid #000; /* Linha preta separadora (opcional, combina com o design) */
+}
+
+.sidebar-logo {
+  max-width: 100%;         /* Garante que não estoure a largura da sidebar */
+  height: auto;            /* Mantém a proporção */
+  display: block;
+  margin: 0 auto;          /* Centraliza o bloco */
+}
+/* --- ÁREA DE SUGESTÕES --- */
+.suggestions-area {
+  margin-top: 15px;
+  border-top: 1px dashed #ccc;
+  padding-top: 10px;
+}
+
+.suggestions-area h4 {
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+/* Cada item da lista */
+.suggestion-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 5px;
+  transition: 0.2s;
+}
+
+.suggestion-item:hover {
+  border-color: #000;
+  background-color: #fafafa;
+}
+
+.sug-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.sug-name {
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #000;
+}
+
+.sug-mutual {
+  font-size: 0.75rem;
+  color: #777;
+}
+
+/* Botãozinho de Adicionar (+) */
+.btn-add {
+  width: 25px !important; /* Força ser pequeno */
+  height: 25px;
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000;
+  color: #fff;
+  border-radius: 50%; /* Bolinha */
+  font-weight: bold;
+  cursor: pointer;
+}
+/* Seus estilos atuais já devem cuidar disso, mas para garantir: */
+.menu-content input {
+  margin-bottom: 0; /* Remove margem inferior se estiver num flex container */
+}
+.btn-add:hover {
+  background-color: #333;
+  transform: scale(1.1);
+}
+
+.no-suggestions {
+  margin-top: 10px;
+  color: #999;
+  text-align: center;
+}
+
+/* --- CARD DE EXPORTAÇÃO --- */
+.export-card {
+  border-left: 5px solid #2563eb; /* Azul Royal */
+  background-color: #f8fafc;
+}
+
+.export-card h3 {
+  font-size: 0.9rem;
+  text-transform: uppercase;
   color: #333;
-  border-bottom: 2px solid #000;
-  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 5px;
   margin-bottom: 10px;
 }
 
+.btn-group {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-export {
+  flex: 1; /* Divide espaço igualmente */
+  background-color: #fff;
+  color: #2563eb;
+  border: 1px solid #2563eb;
+  padding: 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: 0.2s;
+}
+
+.btn-export:hover {
+  background-color: #2563eb;
+  color: #fff;
+}
+
+/* --- ITEM DO MENU --- */
+.menu-item {
+  border-bottom: 1px solid #eee;
+}
+
+/* --- CABEÇALHO DO MENU (O Botão Clicável) --- */
+.menu-header {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 15px 10px;
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.2s;
+  border-radius: 4px;
+}
+
+.menu-header:hover {
+  background-color: #f5f5f5;
+}
+
+/* Quando o menu está aberto, ele fica mais escuro */
+.menu-header.active {
+  background-color: #e0e0e0;
+  color: #000;
+}
+
+/* --- CONTEÚDO DO MENU (O Formulário) --- */
+.menu-content {
+  padding: 15px;
+  background-color: #fafafa; /* Fundo levemente diferente para destacar */
+  border-left: 3px solid #333; /* Linha lateral para indicar que está dentro */
+  animation: slideDown 0.3s ease-out;
+}
+
+/* Animação suave de abertura */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- AJUSTES ESPECÍFICOS --- */
+.arrow { font-size: 0.8rem; color: #777; }
+
+/* Estilo especial para o menu de perigo */
+.danger-header { color: #d32f2f; }
+.danger-header:hover { background-color: #ffebee; }
+.danger-header.active { background-color: #ffebee; border-left: 3px solid #d32f2f; }
+.danger-content { border-left: 3px solid #d32f2f; }
+
+/* Removemos a borda dos botões dentro do header para não conflitar */
+.menu-header button { border: none; background: transparent; }
 /* --- ÁREA DA DIREITA (CONTEÚDO) --- */
 .content {
   flex: 1; /* Ocupa o resto da largura */
@@ -47,7 +335,30 @@
   height: 100%; /* Altura total */
   position: relative;
 }
+/* Botões de Análise */
+.btn-analise {
+  width: 100%;
+  padding: 10px;
+  background-color: #7c3aed; /* Roxo vibrante */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.btn-analise:hover { background-color: #6d28d9; }
 
+.btn-analise-outline {
+  width: 100%;
+  padding: 8px;
+  background-color: transparent;
+  color: #555;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.btn-analise-outline:hover { background-color: #eee; }
 /* --- ONDE O GRAFO FICA (CINZA) --- */
 .graph-area {
   /* O SEGREDO: flex: 1 faz essa área crescer o máximo possível,

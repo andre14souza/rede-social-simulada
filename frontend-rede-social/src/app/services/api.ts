@@ -34,4 +34,17 @@ export class ApiService {
   getGrafo(): Observable<any> {
     return this.http.get(`${this.apiUrl}/grafo`);
   }
+
+  // Deletar Usuário pelo Nome
+  removerUsuario(nome: string): Observable<any> {
+    // Na rota delete, passamos o dado na URL
+    return this.http.delete(`${this.apiUrl}/usuarios/${nome}`);
+  }
+
+  // Deletar Conexão (precisa enviar um body JSON, o delete do Angular é diferente)
+  removerConexao(nomeA: string, nomeB: string): Observable<any> {
+    return this.http.request('delete', `${this.apiUrl}/conexoes`, {
+      body: { nome_usuario_a: nomeA, nome_usuario_b: nomeB }
+    });
+  }
 }

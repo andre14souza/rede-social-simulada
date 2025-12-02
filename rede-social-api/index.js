@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const db = require('./db');
@@ -113,7 +115,67 @@ app.get('/grafo', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+/*
+ * ========================================
+ * ROTAS DE EXCLUSÃO (DELETE)
+ * ========================================
+ */
 
+// 1. DELETAR USUÁRIO (Pelo Nome)
+app.delete('/usuarios/:nome', async (req, res) => {
+  try {
+    const { nome } = req.params;
+
+    // O banco já tem ON DELETE CASCADE, então as conexões somem sozinhas
+    const [result] = await db.query('DELETE FROM usuarios WHERE nome = ?', [nome]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Usuário não encontrado." });
+    }
+
+    res.json({ message: `Usuário ${nome} excluído com sucesso!` });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 2. DELETAR CONEXÃO (Desfazer amizade)
+app.delete('/conexoes', async (req, res) => {
+  try {
+    const { nome_usuario_a, nome_usuario_b } = req.body;
+
+    // Mesma lógica de descobrir IDs pelos nomes
+    const [usuarios] = await db.query(
+      'SELECT id, nome FROM usuarios WHERE nome IN (?, ?)',
+      [nome_usuario_a, nome_usuario_b]
+    );
+
+    if (usuarios.length < 2) {
+      return res.status(404).json({ error: "Um ou ambos os usuários não existem." });
+    }
+
+    const id_a = usuarios.find(u => u.nome === nome_usuario_a).id;
+    const id_b = usuarios.find(u => u.nome === nome_usuario_b).id;
+
+    // Ordena (menor, maior) para achar a conexão certa no banco
+    const menor = Math.min(id_a, id_b);
+    const maior = Math.max(id_a, id_b);
+
+    const [result] = await db.query(
+      'DELETE FROM conexoes WHERE usuario_a = ? AND usuario_b = ?',
+      [menor, maior]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(400).json({ error: "Esses usuários não eram amigos." });
+    }
+
+    res.json({ message: "Amizade desfeita com sucesso!" });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 // INICIAR SERVIDOR
 app.listen(3000, () => {
   console.log('Servidor COMPLETO rodando na porta 3000');
