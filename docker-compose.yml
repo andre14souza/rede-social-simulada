@@ -1,45 +1,54 @@
 version: '3.8'
 
 services:
-  # 1. O Banco de Dados (Totalmente isolado no Docker)
+  # --- BANCO DE DADOS ---
   db:
     image: mysql:8.0
     container_name: rede-social-db
     environment:
-      MYSQL_ROOT_PASSWORD: password  # A senha que o professor vai usar (já configurada aqui)
+      MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: rede_social
     volumes:
-      # Pega seu script e roda automaticamente ao iniciar
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
-      - "3307:3306" # Mudei para 3307 para não dar conflito se o professor já tiver MySQL rodando
+      - "3307:3306"
     networks:
       - rede-app
 
-  # 2. O Back-end (API)
+  # --- BACK-END (API) ---
   backend:
-    build: ./rede-social-api
-    container_name: rede-social-api
+    # Comentamos a linha 'build' para ele não tentar montar do zero
+    # build: ./rede-social-api
+    
+    # ADICIONE ESTA LINHA (Aponta para o seu Docker Hub)
+    image: andre1412/rede-social-backend:v1
+    
+    container_name: rede-social-backend
     ports:
       - "3000:3000"
     environment:
-      - DB_HOST=db      # Nome do serviço do banco acima
+      - DB_HOST=db
       - DB_USER=root
       - DB_PASS=password
       - DB_NAME=rede_social
-      - DB_PORT=3306    # Porta INTERNA do container do banco
+      - DB_PORT=3306
     depends_on:
       - db
     networks:
       - rede-app
     restart: on-failure
 
-  # 3. O Front-end (Angular)
+  # --- FRONT-END (SITE) ---
   frontend:
-    build: ./frontend-rede-social
-    container_name: frontend-rede-social
+    # Comentamos a linha 'build'
+    # build: ./frontend-rede-social
+    
+    # ADICIONE ESTA LINHA (Aponta para o seu Docker Hub)
+    image: andre1412/rede-social-frontend:v1
+    
+    container_name: rede-social-frontend
     ports:
-      - "4200:80" # Professor acessa na porta 4200, mas internamente é 80 (Nginx)
+      - "4200:80"
     depends_on:
       - backend
     networks:
